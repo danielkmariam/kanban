@@ -9,6 +9,9 @@
   },
   "author": "",
   "license": "ISC",
+  "engines": {
+    "node": "v4.1.0"
+  },
   "devDependencies": {
     "babel-core": "^5.8.34",
     "babel-loader": "^5.4.0",
@@ -20,8 +23,6 @@
     "webpack-merge": "^0.3.2"
   },
   "dependencies": {
-    "npm": "2.14.4",
-    "node": "4.1.0",
     "alt": "^0.17.9",
     "alt-container": "^1.0.0",
     "array.prototype.findindex": "^1.0.0",

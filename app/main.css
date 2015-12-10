@@ -10,7 +10,7 @@ body {
 	background-color: #efefef;
 	border: 1px solid #ccc;
 	border-radius: 0.5em;
-
+	min-height: 75em;
 	min-width: 10em;
 	vertical-align: top;
 }

@@ -20,6 +20,7 @@
     "webpack-merge": "^0.3.2"
   },
   "dependencies": {
+    "node": "v4.1.0",
     "alt": "^0.17.9",
     "alt-container": "^1.0.0",
     "array.prototype.findindex": "^1.0.0",

@@ -1,70 +1,45 @@
 import React from 'react';
-import Notes from './Notes.jsx';
+import {DragSource, DropTarget} from 'react-dnd';
+import ItemTypes from '../constants/itemTypes';
 
-import NoteActions from '../actions/NoteActions';
-import NoteStore from '../stores/NoteStore';
-
-export default class Note extends React.Component {
-
-constructor(props) {
-		super(props);
-
-		this.state = {
-			editing: false
+const noteSource = {
+	beginDrag(props) {
+		return {
+			id: props.id
 		};
+	},
+	isDragging(props, monitor) {
+		return props.id == monitor.getItem().id;
 	}
+};
 
-	render() {
-		const {value, onEdit, ...props} = this.props;
-		const editing = this.state.editing;
+const noteTarget = {
+	hover(targetProps, monitor) {
+		const targetId = targetProps.id;
+		const sourceProps = monitor.getItem();
+		const sourceId = sourceProps.id;
 
-		return (
-			<div {...props}>
-				{editing ?  this.renderEdit() : this.renderValue()}
-			</div>
-		);
-	}
-
-	renderEdit = () => {
-		return <input type="text"
-			autoFocus={true}
-			defaultValue={this.props.value}
-			onBlur={this.finishEdit}
-			onKeyPress={this.checkEnter} /> ;
-	}
-
-	renderValue = () => {
-		const onDelete = this.props.onDelete;
-
-		return (
-			<div onClick={this.edit}>
-				<span className="value">{this.props.value}</span>
-				{onDelete ? this.renderDelete() : null }
-			</div>
-		);
-	}
-
-	edit = () => {
-		this.setState({
-			editing: true
-		});
-	}
-
-	checkEnter = (e) => {
-		if (e.key === 'Enter') {
-			this.finishEdit(e);
+		if (sourceId != targetId) {
+			targetProps.onMove({sourceId, targetId});
 		}
 	}
+};
 
-	finishEdit = (e) => {
-		this.props.onEdit(e.target.value);
+@DragSource(ItemTypes.NOTE, noteSource, (connect, monitor) => ({
+	connectDragSource: connect.dragSource(),
+	isDragging: monitor.isDragging()
+}))
 
-		this.setState({
-			editing: false
-		});
-	}
+@DropTarget(ItemTypes.NOTE, noteTarget, (connect) => ({
+	connectDropTarget: connect.dropTarget()
+}))
 
-	renderDelete = () => {
-		return <button className="delete" onClick={this.props.onDelete}>x</button>;
+export default class Note extends React.Component {
+	render() {
+		const {connectDragSource, connectDropTarget, isDragging, id, onMove, ...props} = this.props;
+
+		return connectDragSource(connectDropTarget(
+			<li style={{opacity: isDragging ? 0: 1}} {...props}>{props.children}</li>
+		));
 	}
 };

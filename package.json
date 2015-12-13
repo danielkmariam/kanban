@@ -5,18 +5,18 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "webpack-dev-server",
-    "start": "webpack"
+    "start": "webpack-dev-server",
+    "build": "webpack",
+    "deploy": "node ./app/libs/deploy.js"
   },
-  "author": "",
+  "author": "Daniel Kidanemariam",
   "license": "ISC",
-  "engines": {
-    "node": "v4.1.0"
-  },
   "devDependencies": {
     "babel-core": "^5.8.34",
     "babel-loader": "^5.4.0",
+    "clean-webpack-plugin": "^0.1.5",
     "css-loader": "^0.23.0",
+    "gh-pages": "^0.8.0",
     "html-webpack-plugin": "^1.7.0",
     "style-loader": "^0.13.0",
     "webpack": "^1.12.9",
@@ -29,13 +29,8 @@
     "array.prototype.findindex": "^1.0.0",
     "node-uuid": "^1.4.7",
     "react": "^0.14.3",
-    "react-dom": "^0.14.3",
-    "babel-core": "^5.8.34",
-    "babel-loader": "^5.4.0",
-    "css-loader": "^0.23.0",
-    "html-webpack-plugin": "^1.7.0",
-    "style-loader": "^0.13.0",
-    "webpack": "^1.12.9",
-    "webpack-merge": "^0.3.2"
+    "react-dnd": "^2.0.2",
+    "react-dnd-html5-backend": "^2.0.0",
+    "react-dom": "^0.14.3"
   }
 }

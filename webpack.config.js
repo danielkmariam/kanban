@@ -2,6 +2,9 @@ var path = require('path');
 var HtmlWebpackPlugin = require('html-webpack-plugin');
 var webpack = require('webpack');
 var merge = require('webpack-merge'); 
+var clean = require('clean-webpack-plugin');
+
+var pkg = require('./package.json');
 
 const TARGET = process.env.npm_lifecycle_event;
 const PATHS = {
@@ -49,13 +52,36 @@ if (TARGET === 'start' || !TARGET) {
 			port: process.env.PORT
 		},
 		plugins: [
+			new webpack.DefinePlugin({
+				'process.env.NODE_ENV': JSON.stringify('development')
+			}),
 			new webpack.HotModuleReplacementPlugin()
 		]
 	});
 }
 
-if (TARGET === 'build') {
+if (TARGET === 'build' || TARGET == 'deploy') {
 	module.exports = merge(common, {
-		devtool: 'source-map'
+		entry: {
+			app: PATHS.app,
+			vendor: Object.keys(pkg.dependencies)
+		},
+	 	output: {
+	   	path: PATHS.build,
+	   	filename: '[name].[chunkhash].js?'
+	 	},
+		devtool: 'source-map',
+		plugins: [
+			new clean(['build']),
+			new webpack.DefinePlugin({
+				'process.env.NODE_ENV': JSON.stringify('production')
+			}),
+			new webpack.optimize.UglifyJsPlugin({
+				compress: {
+					warnings: false
+				}
+			}),
+			new webpack.optimize.CommonsChunkPlugin('vendor', '[name].[chunkhash].js')
+		]
 	});
 }
